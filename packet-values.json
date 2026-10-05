@@ -1,0 +1,7 @@
+{
+  "policyDigest": "5bbd47b467e880442ab4168199e65c9d3a115ff9a8776b58d10cb49dce1dd422",
+  "submitterHash": "3242394b2e732b62dfd4deadc6f80369e16da1c4ba04c1f91137a56bbc540ce7",
+  "controllerId": "20mg-release-1",
+  "capsuleSha256": "de3640b29e7a529720db777563da8d71add362b2fcbf039ddbc8aa6fb07784eb",
+  "bundleSha256": "c99e36c06609f8157fb9a360ae4ec19e0f09aef836518c920e8705fb35c17eaa"
+}

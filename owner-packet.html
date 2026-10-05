@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>Prepare your install sheet</title>
+<style>
+  :root {
+    --green: #98fb98;
+    --green-deep: #1f6b3a;
+    --ink: #17301f;
+    --muted: #4a6652;
+    --line: #bfe8c6;
+    --error: #a1171d;
+    --error-bg: #fff0f0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px 48px;
+    background: var(--green);
+    color: var(--ink);
+    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  main { max-width: 760px; margin: 0 auto; }
+  .card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 24px;
+    margin: 0 0 18px;
+    box-shadow: 0 2px 10px rgba(23, 48, 31, 0.12);
+  }
+  h1 { margin: 0 0 12px; font-size: 1.8rem; line-height: 1.2; }
+  h2 { margin: 0 0 10px; font-size: 1.2rem; }
+  .banner {
+    display: inline-block;
+    background: #e9fbe9;
+    border: 1px solid var(--green-deep);
+    color: var(--green-deep);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 0 0 14px;
+  }
+  a { color: var(--green-deep); font-weight: 600; }
+  ol, ul { padding-left: 1.3rem; margin: 0; }
+  li { margin: 0 0 6px; }
+  .field { margin: 0 0 20px; }
+  label { display: block; font-weight: 700; margin: 0 0 4px; }
+  .hint { color: var(--muted); font-size: 0.9rem; margin: 0 0 6px; }
+  input[type="text"], textarea {
+    width: 100%;
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 12px;
+    font: 0.95rem/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    background: #fff;
+    color: var(--ink);
+  }
+  input[aria-invalid="true"] { border-color: var(--error); background: var(--error-bg); }
+  input:focus, textarea:focus, button:focus-visible, a:focus-visible {
+    outline: 3px solid #2e8b57;
+    outline-offset: 2px;
+  }
+  .error { color: var(--error); font-weight: 600; margin: 6px 0 0; font-size: 0.92rem; }
+  .error[hidden], [hidden] { display: none !important; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  button {
+    border: 0;
+    border-radius: 999px;
+    padding: 12px 22px;
+    font: inherit;
+    font-weight: 700;
+    background: var(--green-deep);
+    color: #fff;
+    cursor: pointer;
+  }
+  button.secondary { background: #e9fbe9; color: var(--green-deep); border: 2px solid var(--green-deep); }
+  .summary {
+    background: var(--error-bg);
+    border: 2px solid var(--error);
+    color: var(--error);
+    border-radius: 14px;
+    padding: 12px 16px;
+    margin: 0 0 18px;
+    font-weight: 600;
+  }
+  .ready {
+    background: #e9fbe9;
+    border: 2px solid var(--green-deep);
+    color: var(--green-deep);
+    border-radius: 14px;
+    padding: 12px 16px;
+    margin: 0 0 14px;
+    font-weight: 700;
+  }
+  #output { min-height: 16rem; resize: vertical; white-space: pre; overflow: auto; }
+  .status { margin: 10px 0 0; font-weight: 600; color: var(--green-deep); }
+  @media (max-width: 480px) {
+    .card { padding: 18px; border-radius: 16px; }
+    h1 { font-size: 1.5rem; }
+    button { width: 100%; }
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .card { box-shadow: none; border: 1px solid #999; break-inside: avoid-page; }
+    .actions, .noprint { display: none !important; }
+    #output { border: 1px solid #999; overflow: visible; resize: none; white-space: pre-wrap; font-size: 9pt; }
+    a { color: #000; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <section class="card">
+    <h1>Prepare your install sheet</h1>
+    <p class="banner">Enrollment only · production keys remain locked</p>
+    <p>Back to the <a href="owner-steps.html">owner steps</a>.</p>
+    <p>This page works offline. Nothing you type is sent anywhere, stored, or tracked.</p>
+    <ul>
+      <li>Never enter a private key or token here.</li>
+      <li>Your SSH public key is not a secret. Use the same owner key in the Hetzner SSH key picker.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Steps</h2>
+    <ol>
+      <li>Choose your owner details below.</li>
+      <li>Click <strong>Prepare</strong>.</li>
+      <li>Copy the whole generated file, or choose <strong>Download cloud-init.yaml</strong>.</li>
+      <li>Paste it into Hetzner Cloud's Cloud-init field before you click <strong>Create</strong>.</li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>Owner details</h2>
+    <div id="summary" class="summary" role="alert" tabindex="-1" hidden></div>
+    <form id="form" novalidate autocomplete="off">
+      <div class="field">
+        <label for="hostname">Approval hostname</label>
+        <p class="hint" id="hostname-hint">A public domain you control, in lowercase, for example approve.example.com. Not .local, not an IP address.</p>
+        <input type="text" id="hostname" name="hostname" required autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="hostname-hint hostname-error" value="">
+        <p class="error" id="hostname-error" hidden></p>
+      </div>
+
+      <div class="field">
+        <label for="sshkey">Owner SSH public key (without comment)</label>
+        <p class="hint" id="sshkey-hint">Format: <code>ssh-ed25519 AAAA…</code> or <code>sk-ssh-ed25519@openssh.com AAAA…</code>. Type and base64 only; remove any trailing comment. Public key only.</p>
+        <input type="text" id="sshkey" name="sshkey" required autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="sshkey-hint sshkey-error" value="">
+        <p class="error" id="sshkey-error" hidden></p>
+      </div>
+
+      <div class="field">
+        <label for="cidr">Owner CIDR</label>
+        <p class="hint" id="cidr-hint">The network allowed to reach SSH. IPv4 /24 to /32, or IPv6 /64 to /128. Prefer a single address: /32 for IPv4 or /128 for IPv6.</p>
+        <input type="text" id="cidr" name="cidr" required autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="cidr-hint cidr-error" value="">
+        <p class="error" id="cidr-error" hidden></p>
+      </div>
+
+      <div class="actions">
+        <button type="submit" id="prepare">Prepare</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card" id="result" hidden>
+    <div class="ready" id="ready" role="status">Ready: your install sheet has been generated. Review it, then copy or download it.</div>
+    <label for="output">Generated cloud-init file (read only)</label>
+    <textarea id="output" readonly spellcheck="false" wrap="off"></textarea>
+    <div class="actions">
+      <button type="button" id="copy">Copy whole file</button>
+      <button type="button" id="download" class="secondary">Download cloud-init.yaml</button>
+    </div>
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+  </section>
+
+  <section class="card">
+    <h2>What the install does</h2>
+    <ul>
+      <li>Every download is checksum-checked automatically before it is used.</li>
+      <li>Downloads are tokenless and come over HTTPS from two sources: a public GitHub release and the official 1Password download site.</li>
+      <li>The original reviewed bundle is reconstructed exactly from those two pieces. If the result does not match, nothing is installed.</li>
+      <li>Import is disabled in this enrollment-only sheet.</li>
+      <li>This page makes no claim that a rehearsal has been run.</li>
+    </ul>
+  </section>
+</main>
+
+<script>
+const template = "#cloud-config\n# Enrollment-only. Fill ONLY Kyle's three non-secret owner details below.\n# No private keys, tokens, passkey/enrollment tickets or provider secrets in user-data.\npackage_update: true\npackages: [python3, curl, ca-certificates, xz-utils, unzip, ufw]\nwrite_files:\n  - path: /root/release-owner.json\n    permissions: '0600'\n    content: |\n      {\"hostname\":\"KYLE_APPROVAL_HOSTNAME\",\"ownerSshPublicKey\":\"KYLE_OWNER_SSH_PUBLIC_KEY_WITHOUT_COMMENT\",\"ownerSshCidr\":\"KYLE_OWNER_CIDR\",\"submitterHash\":\"3242394b2e732b62dfd4deadc6f80369e16da1c4ba04c1f91137a56bbc540ce7\",\"policyDigest\":\"5bbd47b467e880442ab4168199e65c9d3a115ff9a8776b58d10cb49dce1dd422\",\"controllerId\":\"20mg-release-1\",\"bundleSha256\":\"c99e36c06609f8157fb9a360ae4ec19e0f09aef836518c920e8705fb35c17eaa\"}\n  - path: /root/reconstruct-controller.py\n    permissions: '0600'\n    content: |\n      #!/usr/bin/env python3\n      \"\"\"Owner-side assembly; never executes or extracts archive-provided code.\"\"\"\n      import gzip\n      import hashlib\n      import io\n      import json\n      import pathlib\n      import sys\n      import tarfile\n      import zipfile\n      \n      FULL = 'c99e36c06609f8157fb9a360ae4ec19e0f09aef836518c920e8705fb35c17eaa'\n      OP = '74277219e8da60958c00f9aee9d2023225e98fdda8bfd2156a5d9e85e0edaab3'\n      RAW = 'd858c5cc2b5632d0db8f6a4d5730060336202dbfba77fa8ed27938f5f27add9d'\n      CAPSULE = 'de3640b29e7a529720db777563da8d71add362b2fcbf039ddbc8aa6fb07784eb'\n      \n      def require(condition):\n          if not condition:\n              raise SystemExit('Installer assembly verification failed; nothing installed')\n      \n      def digest(path):\n          h = hashlib.sha256()\n          with path.open('rb') as f:\n              for chunk in iter(lambda: f.read(1024 * 1024), b''):\n                  h.update(chunk)\n          return h.hexdigest()\n      \n      require(len(sys.argv) == 4)\n      capsule, op_zip, output = map(pathlib.Path, sys.argv[1:])\n      require(not output.exists() and digest(capsule) == CAPSULE and digest(op_zip) == OP)\n      with tarfile.open(capsule, 'r:gz') as archive:\n          members = archive.getmembers()\n          require(len(members) == 2 and {m.name for m in members} == {'base.tar', 'recipe.json'})\n          require(all(m.isfile() and not m.issym() and not m.islnk() for m in members))\n          require(archive.getmember('recipe.json').size <= 4096)\n          require(archive.getmember('base.tar').size <= 300 * 1024 * 1024)\n          recipe = json.loads(archive.extractfile('recipe.json').read())\n          base = archive.extractfile('base.tar').read()\n      require(recipe['schema'] == 1 and recipe['originalTarSha256'] == RAW and recipe['originalGzipSha256'] == FULL)\n      require(recipe['baseBytes'] == len(base) and recipe['originalTarBytes'] <= 350 * 1024 * 1024)\n      require([s['name'] for s in recipe['spans']] == ['op', 'op.sig'])\n      pieces = []\n      previous = 0\n      with zipfile.ZipFile(op_zip) as archive:\n          for span in recipe['spans']:\n              offset, length = span['baseOffset'], span['length']\n              require(isinstance(offset, int) and previous <= offset <= len(base))\n              require(isinstance(length, int) and 0 < length <= 50 * 1024 * 1024)\n              info = archive.getinfo(span['name'])\n              require(info.file_size == length and not info.is_dir())\n              pieces.extend([base[previous:offset], archive.read(info)])\n              previous = offset\n      pieces.append(base[previous:])\n      original = b''.join(pieces)\n      require(len(original) == recipe['originalTarBytes'] and hashlib.sha256(original).hexdigest() == RAW)\n      # Gzip metadata and compression settings reproduce the already-reviewed bundle.\n      # Any platform-dependent compression difference fails the full bundle digest.\n      with output.open('xb') as f, gzip.GzipFile(filename='', mode='wb', fileobj=f, mtime=0) as compressed:\n          compressed.write(original)\n      if digest(output) != FULL:\n          output.unlink()\n          raise SystemExit('Exact reviewed bundle could not be reconstructed; nothing installed')\n      print('Exact reviewed enrollment-only bundle verified')\nruncmd:\n  - - /bin/sh\n    - -c\n    - |\n      set -eu\n      umask 077\n      curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' --tlsv1.2 --output /root/controller-capsule.tar.gz 'https://github.com/kylelgm/20mg-release-controller-dist/releases/download/enrollment-5e13b7a/controller-enrollment-capsule.tar.gz'\n      echo 'de3640b29e7a529720db777563da8d71add362b2fcbf039ddbc8aa6fb07784eb  /root/controller-capsule.tar.gz' | sha256sum --check --status\n      curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' --tlsv1.2 --output /root/op.zip 'https://cache.agilebits.com/dist/1P/op2/pkg/v2.40.0/op_linux_amd64_v2.40.0.zip'\n      echo '74277219e8da60958c00f9aee9d2023225e98fdda8bfd2156a5d9e85e0edaab3  /root/op.zip' | sha256sum --check --status\n      python3 /root/reconstruct-controller.py /root/controller-capsule.tar.gz /root/op.zip /root/controller.tar.gz\n      echo 'c99e36c06609f8157fb9a360ae4ec19e0f09aef836518c920e8705fb35c17eaa  /root/controller.tar.gz' | sha256sum --check --status\n      mkdir -m 0700 /root/controller-install\n      tar -xzf /root/controller.tar.gz -C /root/controller-install\n      python3 /root/controller-install/installer/install.py /root/release-owner.json /root/controller.tar.gz\n";
+
+const form = document.getElementById('form');
+const summary = document.getElementById('summary');
+const result = document.getElementById('result');
+const output = document.getElementById('output');
+const status = document.getElementById('status');
+
+const fields = {
+  hostname: { input: document.getElementById('hostname'), error: document.getElementById('hostname-error'), label: 'Approval hostname' },
+  sshkey: { input: document.getElementById('sshkey'), error: document.getElementById('sshkey-error'), label: 'Owner SSH public key' },
+  cidr: { input: document.getElementById('cidr'), error: document.getElementById('cidr-error'), label: 'Owner CIDR' }
+};
+
+const UNSAFE_CHARS = /["'\\\r\n]/;
+const HOSTNAME_RE = /^(?=.{4,253}$)[a-z0-9]+(?:[.-][a-z0-9]+)+$/;
+const SSH_KEY_RE = /^(?:ssh-ed25519|sk-ssh-ed25519@openssh\.com) [A-Za-z0-9+\/=]{40,200}$/;
+const IPV4_PART_RE = /^(?:0|[1-9][0-9]{0,2})$/;
+const MASK_RE = /^(?:0|[1-9][0-9]*)$/;
+
+// Each checker returns an error message, or '' when the value is valid.
+function checkHostname(value) {
+  if (!value) return 'Enter your approval hostname.';
+  if (UNSAFE_CHARS.test(value)) return 'Remove quotes, backslashes and line breaks.';
+  if (!HOSTNAME_RE.test(value)) return 'Use a lowercase domain such as approve.example.com (letters, digits, dots and hyphens).';
+  if (!value.includes('.')) return 'Use a full public domain that contains a dot.';
+  if (value.endsWith('.local')) return 'Hostnames ending in .local are not public. Use a domain you control.';
+  if (/^[0-9.]+$/.test(value)) return 'Use a domain name, not an IP address.';
+  return '';
+}
+
+function checkSshKey(value) {
+  if (!value) return 'Enter your owner SSH public key.';
+  if (UNSAFE_CHARS.test(value)) return 'Remove quotes, backslashes and line breaks.';
+  if (!SSH_KEY_RE.test(value)) return 'Use "ssh-ed25519" or "sk-ssh-ed25519@openssh.com", one space, then the base64 key. Remove any comment after the key.';
+  return '';
+}
+
+function checkIpv4(address, mask) {
+  const parts = address.split('.');
+  if (parts.length !== 4) return 'An IPv4 address needs four numbers, like 203.0.113.7/32.';
+  for (const part of parts) {
+    if (!IPV4_PART_RE.test(part) || Number(part) > 255) {
+      return 'Each IPv4 number must be 0 to 255 with no leading zeros.';
+    }
+  }
+  if (!MASK_RE.test(mask) || Number(mask) < 24 || Number(mask) > 32) {
+    return 'The IPv4 mask must be a number from 24 to 32. A single address (/32) is recommended.';
+  }
+  return '';
+}
+
+function checkIpv6(address, mask) {
+  if (address.includes('%')) return 'IPv6 zone identifiers (%) are not allowed.';
+  if (!/^[0-9A-Fa-f:.]+$/.test(address)) return 'IPv6 addresses may only contain hex digits and colons.';
+  try {
+    // Parsing only; no network request is made.
+    new URL('http://[' + address + ']');
+  } catch (e) {
+    return 'That is not a valid IPv6 address.';
+  }
+  if (!MASK_RE.test(mask) || Number(mask) < 64 || Number(mask) > 128) {
+    return 'The IPv6 mask must be a number from 64 to 128. A single address (/128) is recommended.';
+  }
+  return '';
+}
+
+function checkCidr(value) {
+  if (!value) return 'Enter your owner CIDR.';
+  if (UNSAFE_CHARS.test(value)) return 'Remove quotes, backslashes and line breaks.';
+  const pieces = value.split('/');
+  if (pieces.length !== 2) return 'Use address/mask form, like 203.0.113.7/32 or 2001:db8::1/128.';
+  const address = pieces[0];
+  const mask = pieces[1];
+  if (address.includes(':')) return checkIpv6(address, mask);
+  return checkIpv4(address, mask);
+}
+
+function buildSheet(hostname, sshkey, cidr) {
+  return template
+    .split('KYLE_APPROVAL_HOSTNAME').join(hostname)
+    .split('KYLE_OWNER_SSH_PUBLIC_KEY_WITHOUT_COMMENT').join(sshkey)
+    .split('KYLE_OWNER_CIDR').join(cidr);
+}
+
+function clearErrors() {
+  summary.hidden = true;
+  summary.textContent = '';
+  Object.values(fields).forEach(function (f) {
+    f.error.hidden = true;
+    f.error.textContent = '';
+    f.input.removeAttribute('aria-invalid');
+  });
+}
+
+function clearResult() {
+  result.hidden = true;
+  output.value = '';
+  status.textContent = '';
+}
+
+function showError(key, message) {
+  const f = fields[key];
+  f.error.textContent = message;
+  f.error.hidden = false;
+  f.input.setAttribute('aria-invalid', 'true');
+}
+
+form.addEventListener('submit', function (event) {
+  event.preventDefault();
+  clearErrors();
+  clearResult();
+
+  // Trim and write back so the generated file matches what is on screen.
+  Object.values(fields).forEach(function (f) { f.input.value = f.input.value.trim(); });
+  const hostname = fields.hostname.input.value;
+  const sshkey = fields.sshkey.input.value;
+  const cidr = fields.cidr.input.value;
+
+  const problems = [
+    ['hostname', checkHostname(hostname)],
+    ['sshkey', checkSshKey(sshkey)],
+    ['cidr', checkCidr(cidr)]
+  ].filter(function (p) { return p[1]; });
+
+  if (problems.length > 0) {
+    problems.forEach(function (p) { showError(p[0], p[1]); });
+    summary.textContent = 'Please fix ' + problems.length + (problems.length === 1 ? ' field' : ' fields') +
+      ': ' + problems.map(function (p) { return fields[p[0]].label; }).join(', ') + '.';
+    summary.hidden = false;
+    fields[problems[0][0]].input.focus();
+    return;
+  }
+
+  output.value = buildSheet(hostname, sshkey, cidr);
+  output.rows = Math.min(output.value.split('\n').length, 60);
+  result.hidden = false;
+  result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('ready').focus && document.getElementById('ready').setAttribute('tabindex', '-1');
+  document.getElementById('ready').focus();
+});
+
+// Any edit invalidates a previous result.
+Object.values(fields).forEach(function (f) {
+  f.input.addEventListener('input', function () {
+    clearResult();
+    clearErrors();
+  });
+});
+
+document.getElementById('copy').addEventListener('click', function () {
+  const text = output.value;
+  if (!text) return;
+  function fallback() {
+    output.focus();
+    output.select();
+    output.setSelectionRange(0, text.length);
+    status.textContent = 'Automatic copy is not available here. The file is selected: press Ctrl+C (or Cmd+C on a Mac) to copy it.';
+  }
+  if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+    navigator.clipboard.writeText(text).then(function () {
+      status.textContent = 'Copied the whole file to your clipboard.';
+    }, fallback);
+  } else {
+    fallback();
+  }
+});
+
+document.getElementById('download').addEventListener('click', function () {
+  const text = output.value;
+  if (!text) return;
+  const blob = new Blob([text], { type: 'text/yaml;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'cloud-init.yaml';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  status.textContent = 'Downloaded cloud-init.yaml.';
+});
+</script>
+</body>
+</html>

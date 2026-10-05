@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "originalTarBytes": 233738240,
+  "originalTarSha256": "d858c5cc2b5632d0db8f6a4d5730060336202dbfba77fa8ed27938f5f27add9d",
+  "originalGzipSha256": "c99e36c06609f8157fb9a360ae4ec19e0f09aef836518c920e8705fb35c17eaa",
+  "baseBytes": 190262568,
+  "spans": [
+    {
+      "name": "op",
+      "baseOffset": 190253568,
+      "length": 43475106
+    },
+    {
+      "name": "op.sig",
+      "baseOffset": 190254430,
+      "length": 566
+    }
+  ]
+}

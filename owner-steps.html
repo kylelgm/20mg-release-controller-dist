@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>20MG Release Control · Step Sheet</title>
+<style>
+  :root{
+    --bg:#e9f2e1;
+    --ink:#1f2d22;
+    --muted:#5b6d5f;
+    --green:#3f7a52;
+    --green-soft:#d9eacd;
+    --card:#ffffff;
+    --warn:#8a5a14;
+    --warn-bg:#fbf1da;
+    --line:#d3e3c8;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.45;
+  }
+  .banner{
+    background:var(--warn-bg);
+    color:var(--warn);
+    text-align:center;
+    font-size:.85rem;
+    font-weight:600;
+    padding:.55rem 1rem;
+    border-bottom:1px solid #ecd9a8;
+    letter-spacing:.01em;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:1.5rem 1rem 2.5rem}
+  header{text-align:center;margin:.5rem 0 1.5rem}
+  header h1{margin:0 0 .25rem;font-size:1.7rem;letter-spacing:-.01em}
+  header p{margin:0;color:var(--muted);font-size:1rem}
+  .owner-tag{
+    display:inline-block;margin-top:.7rem;
+    background:var(--green-soft);color:var(--green);
+    border-radius:999px;padding:.25rem .8rem;font-size:.8rem;font-weight:600;
+  }
+  .summary{
+    background:var(--card);border-radius:22px;padding:1rem 1.2rem;margin-bottom:1rem;
+    box-shadow:0 2px 0 var(--line),0 6px 16px rgba(63,122,82,.08);
+    font-size:.95rem;
+    page-break-inside:avoid;break-inside:avoid;
+  }
+  .summary p{margin:.2rem 0}
+  .summary .go{color:var(--green);font-weight:700}
+  ol.steps{list-style:none;margin:0;padding:0;display:grid;gap:.9rem}
+  .step{
+    background:var(--card);
+    border-radius:22px;
+    padding:1rem 1.1rem;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:.9rem;
+    align-items:start;
+    box-shadow:0 2px 0 var(--line),0 6px 16px rgba(63,122,82,.08);
+    page-break-inside:avoid;
+    break-inside:avoid;
+  }
+  .badge{
+    display:flex;flex-direction:column;align-items:center;gap:.4rem;
+  }
+  .num{
+    width:34px;height:34px;border-radius:50%;
+    background:var(--green);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:1rem;
+  }
+  .icon{
+    width:48px;height:48px;border-radius:16px;background:var(--green-soft);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .icon svg{width:28px;height:28px;stroke:var(--green);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .step h2{margin:.1rem 0 .35rem;font-size:1.1rem}
+  .step p{margin:.2rem 0;font-size:.95rem}
+  .step ul{margin:.3rem 0 0;padding-left:1.1rem;font-size:.92rem}
+  .step li{margin:.15rem 0}
+  .step a{color:var(--green);font-weight:600;overflow-wrap:anywhere}
+  .never{
+    margin-top:.5rem;
+    background:var(--warn-bg);color:var(--warn);
+    border-radius:12px;padding:.4rem .7rem;font-size:.85rem;font-weight:600;
+  }
+  .btn{
+    display:inline-block;margin:.5rem 0 .2rem;
+    background:var(--green);color:#fff !important;text-decoration:none;
+    border-radius:999px;padding:.5rem 1.1rem;font-size:.92rem;font-weight:700;
+  }
+  .stop{
+    background:#fff;border:2px dashed var(--green);
+  }
+  .stop .never{background:var(--green-soft);color:var(--green)}
+  footer{margin-top:1.6rem}
+  .card{
+    background:var(--card);border-radius:22px;padding:1.1rem 1.2rem;
+    box-shadow:0 2px 0 var(--line),0 6px 16px rgba(63,122,82,.08);
+    page-break-inside:avoid;break-inside:avoid;
+    margin-bottom:.9rem;
+  }
+  .card h3{margin:0 0 .7rem;font-size:1rem}
+  .flow{
+    display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;
+    list-style:none;margin:0;padding:0;
+  }
+  .flow li{
+    background:var(--green-soft);color:var(--green);
+    border-radius:999px;padding:.35rem .85rem;font-size:.88rem;font-weight:600;
+  }
+  .flow .arrow{background:none;padding:0;color:var(--muted);font-weight:400}
+  figure{margin:0}
+  .imgbox{
+    background:var(--bg);
+    border:2px dashed var(--line);
+    border-radius:16px;
+    min-height:160px;
+    overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--muted);font-size:.85rem;text-align:center;
+  }
+  .imgbox img{display:block;width:100%;height:auto}
+  figcaption{margin-top:.6rem;font-size:.82rem;color:var(--muted);text-align:center}
+  .status{
+    background:var(--warn-bg);color:var(--warn);
+    border-radius:22px;padding:1rem 1.2rem;font-size:.92rem;
+    page-break-inside:avoid;break-inside:avoid;
+  }
+  .status p{margin:.25rem 0}
+  .status strong{display:block;margin-bottom:.2rem}
+  @media (max-width:420px){
+    .step{padding:.9rem;gap:.7rem}
+    header h1{font-size:1.45rem}
+  }
+  @media print{
+    @page{margin:14mm}
+    body{background:#fff;font-size:11pt}
+    .banner{border:1px solid #ecd9a8;border-radius:10px;margin:0 0 .6rem}
+    .wrap{max-width:none;padding:0}
+    .step,.card,.status,.summary{box-shadow:none;border:1px solid var(--line);page-break-inside:avoid;break-inside:avoid}
+    .stop{border:2px dashed var(--green)}
+    .btn{background:none;color:var(--green) !important;border:1px solid var(--green)}
+    figure,.imgbox,header,li,.never{page-break-inside:avoid;break-inside:avoid}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">Preparation and enrollment only · not production-ready</div>
+
+<div class="wrap">
+  <header>
+    <h1>20MG release control</h1>
+    <p>Visual step sheet for Kyle</p>
+    <span class="owner-tag">Owner-only steps</span>
+  </header>
+
+  <div class="summary">
+    <p class="go">You can do steps 1–6 now. Step 7 is a hard stop; step 8 waits for final review.</p>
+    <p>Everything below is clicks, pastes and physical actions. Nothing to run.</p>
+  </div>
+
+  <ol class="steps">
+
+    <li class="step">
+      <div class="badge">
+        <div class="num">1</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="6" rx="2"/>
+            <rect x="3" y="14" width="18" height="6" rx="2"/>
+            <path d="M7 7h.01M7 17h.01"/>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <h2>Start a separate server</h2>
+        <ul>
+          <li>Sign in to your owner-only Hetzner account</li>
+          <li>Create a separate project named <strong>Release management</strong></li>
+          <li>Start a new server: <strong>Ubuntu 24.04</strong>, small <strong>x86-64</strong> type</li>
+          <li>Keep the <strong>public IPv4</strong> option on</li>
+          <li>Select your owner-only SSH key</li>
+        </ul>
+        <div class="never">Stay on the creation screen. Do not click Create yet.</div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="badge">
+        <div class="num">2</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/>
+            <path d="M4 7.5l8 4.5 8-4.5M12 12v9"/>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <h2>Fill three details, paste, then Create</h2>
+        <p><a class="btn" href="owner-packet.html">Fill your three owner details</a></p>
+        <p>The form is offline and works on your device only. Nothing you type is sent anywhere. It asks for:</p>
+        <ul>
+          <li><strong>Approval hostname</strong>: a public domain name you own and control (see step 3)</li>
+          <li><strong>Owner SSH public key</strong>, without the comment. Public key only, never the private key.</li>
+          <li><strong>Owner source CIDR</strong>: the network allowed to reach SSH. Narrow is best: a single IPv4 <strong>/32</strong> or IPv6 <strong>/128</strong>. It must be the network you will connect from.</li>
+        </ul>
+        <p>Every other install value, download and hash is already fixed. No download access token is needed. The installer checksum is checked automatically, and the download bundle is secret-free. Public distribution location:
+          <a href="https://github.com/kylelgm/20mg-release-controller-dist/releases/tag/enrollment-5e13b7a">github.com/kylelgm/20mg-release-controller-dist/releases/tag/enrollment-5e13b7a</a></p>
+        <ul>
+          <li>Download the completed <strong>cloud-init.yaml</strong></li>
+          <li>Paste the whole file into the <strong>Cloud-init</strong> box on the same creation screen from step 1</li>
+          <li>Only then click <strong>Create server</strong></li>
+        </ul>
+        <div class="never">Do not create the server until all three details are filled in. No blank fields, private keys or tokens.</div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="badge">
+        <div class="num">3</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <h2>Point the approval address at the server</h2>
+        <ul>
+          <li>Copy the new server's IPv4 address from Hetzner</li>
+          <li>In your domain's DNS, set an <strong>A record</strong> for your chosen hostname to that IPv4</li>
+          <li>Set it <strong>DNS-only</strong> (no proxy)</li>
+          <li>Use a domain in an account you own, separate from any agent profile</li>
+          <li>Open the hostname with https on your owner phone</li>
+        </ul>
+        <div class="never">This hostname is permanent for these passkeys. Changing it later needs a fresh owner maintenance.</div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="badge">
+        <div class="num">4</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="7" y="2.5" width="10" height="19" rx="2.5"/>
+            <circle cx="12" cy="10" r="2"/>
+            <path d="M12 12v4M12 14.5h1.5M10 19h4"/>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <h2>Get a ticket and enroll your passkey</h2>
+        <ul>
+          <li>In your owner-only SSH app, save a connection: user <strong>root</strong>, the new server IP, your owner private key, from the allowed network</li>
+          <li>Request a terminal. The protected menu opens automatically.</li>
+          <li>Select <strong>Fresh first enrollment ticket</strong></li>
+          <li>Copy the ticket by hand into the approval page, then register the passkey on your phone</li>
+          <li>If you need to add a second separate device or security key, reconnect and select <strong>Fresh recovery access ticket</strong></li>
+        </ul>
+        <p>Real Face ID acceptance has not been shown yet.</p>
+        <div class="never">Never send a ticket in chat.</div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="badge">
+        <div class="num">5</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3.5" y="4" width="17" height="16" rx="3"/>
+            <circle cx="12" cy="12" r="3.5"/>
+            <path d="M12 8.5V10M12 14v1.5M8.5 12H10M14 12h1.5"/>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <h2>Make a private vault</h2>
+        <p>In 1Password, create a custom vault named <strong>20MG Release</strong>. Leave it empty for now.</p>
+        <div class="never">Keep it inaccessible to agent sessions.</div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="badge">
+        <div class="num">6</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="8" cy="15" r="4.5"/>
+            <path d="M11.5 11.5L20 3M16 7l3 3M14 9l2 2"/>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <h2>Create a read-only service account</h2>
+        <ul>
+          <li>Create a 1Password service account with access to only the <strong>20MG Release</strong> vault</li>
+          <li>Permission: <strong>Read items</strong> only</li>
+          <li>Save the once-shown token in owner-only recovery storage</li>
+        </ul>
+        <div class="never">Agents never see this token. Do not paste it in chat.</div>
+      </div>
+    </li>
+
+    <li class="step stop">
+      <div class="badge">
+        <div class="num">7</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/>
+            <path d="M9 12l2.2 2.2L15.5 10"/>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <h2>STOP: wait for the reviewed packet</h2>
+        <p>The enrollment-only installer rejects all production token imports and release operations. Wait for:</p>
+        <ul>
+          <li>the remaining provider adapters</li>
+          <li>actual denial tests</li>
+          <li>the iPhone ceremony</li>
+          <li>independent Opus review</li>
+        </ul>
+        <p>Do not import any token until the coordinator explicitly says the reviewed import-enabled packet is ready. A later reviewed bundle will need owner maintenance; the current server cannot update itself.</p>
+        <div class="never">Hard stop. Never send production keys to agents.</div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="badge">
+        <div class="num">8</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 4L3 11l6 2.5L11.5 20l3-5 5-3z"/>
+            <path d="M9 13.5L21 4"/>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <h2>Telegram and GitHub: later</h2>
+        <p>This is a later owner step. The Telegram bot handle and the read-only GitHub permissions will be delivered after final review.</p>
+        <ul>
+          <li>Do not invent values</li>
+          <li>Do not send any tokens now</li>
+        </ul>
+        <div class="never">Telegram is notify-only and never approves a release.</div>
+      </div>
+    </li>
+
+  </ol>
+
+  <footer>
+    <div class="card">
+      <h3>Future regular release path</h3>
+      <ul class="flow">
+        <li>Notification</li>
+        <li class="arrow" aria-hidden="true">→</li>
+        <li>Version card</li>
+        <li class="arrow" aria-hidden="true">→</li>
+        <li>Passkey</li>
+        <li class="arrow" aria-hidden="true">→</li>
+        <li>One complete fixed run</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <figure>
+        <div class="imgbox">
+          <img src="assets/approval-card.png" alt="Synthetic approval card placeholder">
+        </div>
+        <figcaption>Synthetic approval card · browser virtual passkey; not Face ID acceptance</figcaption>
+      </figure>
+    </div>
+
+    <div class="status">
+      <strong>Where things stand</strong>
+      <p>You can do steps 1–6 now. Step 7 is a hard stop; step 8 waits for final review.</p>
+      <p>This is preparation and enrollment only. It is not production-ready, and actual Face ID acceptance has not been demonstrated.</p>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>
